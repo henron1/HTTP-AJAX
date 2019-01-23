@@ -31,7 +31,7 @@ class App extends Component {
         <h1>Friends List</h1>
         {/* {this.state.error && <h4>{this.state.error}</h4>} */}
         
-        <FriendList friends={this.state.friends} />
+        <FriendList friendss={this.state.friends} />
         
       </div>
     );
