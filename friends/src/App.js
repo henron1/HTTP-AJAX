@@ -4,14 +4,18 @@ import './App.css';
 import FriendList from './components/friendlist';
 import FriendForm from './components/friendForm';
 
+
+const clearedFriend= {
+  name:'',
+  age:'',
+  email:'',
+
+}
+
 class App extends Component {
   state = {
     friends: [],
-    friend: {
-      name: '',
-      age: '',
-      email: ''
-    }
+    friend: clearedFriend,
   }
 
   componentDidMount() {
@@ -50,6 +54,44 @@ class App extends Component {
     })
     .catch(err => console.log(err));
   }
+
+  deleteFriend = (ev, friendId) => {
+    ev.preventDefault();
+   axios
+   .delete(`http://localhost:5000/friends/${friendId}`)
+   .then(res => {
+     this.setState({ items:res.data });
+     this.props.history.push('/friends');
+   })
+   .catch(err => {
+     console.log(err);
+   });
+  };
+
+  populateFriend = (ev, id) =>{
+    ev.prevent.default();
+    this.setState({
+      friend: this.state.friends.find(friend => friend.id === id),
+      isUpdating:true
+    });
+    this.props.history.push('/friends')
+  }
+
+  updateFriend = () => {
+    axios.put(`http://localhost:5000/friends/${this.state.friend.id}`, this.state.friend)
+    .then(res => {
+      this.setState({
+        friends: res.data,
+        isUpdating:false,
+        friend: clearedFriend
+      });
+      this.props.history.push('/friends')
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
 
 
   render() {

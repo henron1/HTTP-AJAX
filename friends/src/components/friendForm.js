@@ -1,18 +1,18 @@
 import React from 'react';
 
 function FriendForm(props) {
-    // function handleSubmit(ev) {
-    //     ev.preventDefault();
-    //     if (props.isUpdating) {
-    //         props.updateItem();
-    //     } else {
-    //         props.addItem();
-    //     }
-    // }
+    function handleSubmit(ev) {
+        ev.preventDefault();
+        if (props.isUpdating) {
+            props.updateItem();
+        } else {
+            props.addItem();
+        }
+    }
 
     return (
         <div>
-            {/* <h2>{props.isUpdating ? 'Update Friend' : 'Add New Friend'}</h2> */}
+            <h2>{props.isUpdating ? 'Update Friend' : 'Add New Friend'}</h2>
             <form>
             <input
                 type="text"
@@ -38,7 +38,9 @@ function FriendForm(props) {
                 onChange={props.handleChanges}
             />
             <div className="baseline" />
-            <button type='submit' onClick={props.addFriend}>{props.isUpdating ? 'Update Friend' : 'Add New Friend'}</button>
+            <button type='submit' onClick={props.addFriend}>
+                {props.isUpdating ? 'Update Friend' : 'Add New Friend'}
+            </button>
             </form>
 
         </div>
