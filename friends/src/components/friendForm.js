@@ -4,16 +4,16 @@ function FriendForm(props) {
     function handleSubmit(ev) {
         ev.preventDefault();
         if (props.isUpdating) {
-            props.updateItem();
+            props.updateFriend();
         } else {
-            props.addItem();
+            props.addFriend();
         }
     }
 
     return (
         <div>
             <h2>{props.isUpdating ? 'Update Friend' : 'Add New Friend'}</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
             <input
                 type="text"
                 name="name"

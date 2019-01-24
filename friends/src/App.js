@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import {Route} from 'react-router-dom';
 import './App.css';
+import Home from './components/Home';
 import FriendList from './components/friendlist';
 import FriendForm from './components/friendForm';
+import Friend from './components/friends';
 
 
 const clearedFriend= {
@@ -16,6 +19,7 @@ class App extends Component {
   state = {
     friends: [],
     friend: clearedFriend,
+    isUpdating: false
   }
 
   componentDidMount() {
@@ -60,7 +64,7 @@ class App extends Component {
    axios
    .delete(`http://localhost:5000/friends/${friendId}`)
    .then(res => {
-     this.setState({ items:res.data });
+     this.setState({ friends:res.data });
      this.props.history.push('/friends');
    })
    .catch(err => {
@@ -74,7 +78,7 @@ class App extends Component {
       friend: this.state.friends.find(friend => friend.id === id),
       isUpdating:true
     });
-    this.props.history.push('/friends')
+    this.props.history.push('/form')
   }
 
   updateFriend = () => {
@@ -99,9 +103,20 @@ class App extends Component {
       <div className="App">
         <h1>Friends List</h1>
         {/* {this.state.error && <h4>{this.state.error}</h4>} */}
-        
-        <FriendList friends={this.state.friends} />
-        <FriendForm addFriend={this.addFriend} friend={this.state.friend} handleChanges={this.handleChanges}/>
+        <Route exact path='/' component={Home} />
+        <Route 
+          exact 
+          path={`/friends/:friendId`} 
+          render={props => ( <FriendList {...props} friends={this.state.friends}/>)} 
+        /> 
+        <Route path="/friends/:friendId" render={props =>
+        <Friend friends={this.state.friends} friend={this.state.friend} deleteFriend={this.deleteFriend} populateFriend={this.populateFriend} />
+        } />
+            
+       <Route path="/form" render={props => (
+           <FriendForm {...props} addFriend={this.addFriend} friend={this.state.friend} handleChanges={this.handleChanges} updateFriend={this.updateFriend} isUpdating={this.state.isUpdating}/>
+       )}/>
+       
         
       </div>
     );
