@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import './App.css';
 import FriendList from './components/friendlist';
+import FriendForm from './components/friendForm';
 
 class App extends Component {
   state = {
     friends: [],
-    // error: ''
+    friend: {
+      name: '',
+      age: '',
+      email: ''
+    }
   }
 
   componentDidMount() {
@@ -23,6 +28,18 @@ class App extends Component {
       this.setState({error: err});
     })
   }
+
+  handleChanges = e => {
+    e.persist();
+    this.setState(prevState => {
+      return {
+        friend: {
+          ...prevState.friend,
+          [e.target.name]: e.target.value
+        }
+      };
+    });
+  };
 
   addFriend = () => {
     axios
@@ -41,7 +58,8 @@ class App extends Component {
         <h1>Friends List</h1>
         {/* {this.state.error && <h4>{this.state.error}</h4>} */}
         
-        <FriendList friendss={this.state.friends} />
+        <FriendList friends={this.state.friends} />
+        <FriendForm addFriend={this.addFriend} friend={this.state.friend} handleChanges={this.handleChanges}/>
         
       </div>
     );
