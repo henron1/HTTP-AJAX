@@ -24,6 +24,16 @@ class App extends Component {
     })
   }
 
+  addFriend = () => {
+    axios
+    .post('http://localhost:5000/friends', this.state.friend)
+    .then(res => {
+      this.setState({ friends: res.data});
+      this.props.history.push('/friends');
+    })
+    .catch(err => console.log(err));
+  }
+
 
   render() {
     return (
