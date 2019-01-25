@@ -4,9 +4,9 @@ function FriendForm(props) {
     function handleSubmit(ev) {
         ev.preventDefault();
         if (props.isUpdating) {
-            props.updateFriend();
+            props.updateFriend(ev);
         } else {
-            props.addFriend();
+            props.addFriend(ev);
         }
     }
 
@@ -38,8 +38,8 @@ function FriendForm(props) {
                 onChange={props.handleChanges}
             />
             <div className="baseline" />
-            <button type='submit' onClick={props.addFriend}>
-                {props.isUpdating ? 'Update Friend' : 'Add New Friend'}
+            <button type='submit'>
+                {props.isUpdating ? 'Update Friend' : 'Add New Friend'} 
             </button>
             </form>
 

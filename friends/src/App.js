@@ -49,7 +49,8 @@ class App extends Component {
     });
   };
 
-  addFriend = () => {
+  addFriend = e => {
+    e.preventDefault();
     axios
     .post('http://localhost:5000/friends', this.state.friend)
     .then(res => {
@@ -59,8 +60,8 @@ class App extends Component {
     .catch(err => console.log(err));
   }
 
-  deleteFriend = (ev, friendId) => {
-    ev.preventDefault();
+  deleteFriend = (friendId) => {
+    
    axios
    .delete(`http://localhost:5000/friends/${friendId}`)
    .then(res => {
@@ -72,16 +73,17 @@ class App extends Component {
    });
   };
 
-  populateFriend = (ev, id) =>{
-    ev.prevent.default();
+  populateFriend = (id) =>{
+   
     this.setState({
       friend: this.state.friends.find(friend => friend.id === id),
       isUpdating:true
     });
-    this.props.history.push('/form')
+    this.props.history.push('/friends')
   }
 
   updateFriend = () => {
+    console.log(this.state.friend.id);
     axios.put(`http://localhost:5000/friends/${this.state.friend.id}`, this.state.friend)
     .then(res => {
       this.setState({
@@ -103,7 +105,7 @@ class App extends Component {
       <div className="App">
         <h1>Friends List</h1>
         {/* {this.state.error && <h4>{this.state.error}</h4>} */}
-        <Route exact path='/' component={Home} />
+        {/* <Route exact path='/' component={Home} />
         <Route 
           exact 
           path={`/friends/:friendId`} 
@@ -115,9 +117,9 @@ class App extends Component {
             
        <Route path="/form" render={props => (
            <FriendForm {...props} addFriend={this.addFriend} friend={this.state.friend} handleChanges={this.handleChanges} updateFriend={this.updateFriend} isUpdating={this.state.isUpdating}/>
-       )}/>
-       
-        
+       )}/> */}
+       <FriendList friends={this.state.friends} deleteFriend={this.deleteFriend} populateFriend={this.populateFriend}/>
+       <FriendForm addFriend={this.addFriend} friend={this.state.friend} handleChanges={this.handleChanges} updateFriend={this.updateFriend} isUpdating={this.state.isUpdating}/>
       </div>
     );
   }
